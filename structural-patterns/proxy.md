@@ -20,7 +20,7 @@ The **Proxy** pattern acts as a middle layer that controls access to the real ob
 
 ## C# Code Example
 
-%%%
+``` C#
 public interface IImage
 {
     void Display();
@@ -66,7 +66,7 @@ public class ImageProxy : IImage
         _realImage.Display();
     }
 }
-%%%
+```
 
 ## Visual Example
 

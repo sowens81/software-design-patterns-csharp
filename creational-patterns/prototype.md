@@ -20,7 +20,7 @@ The Prototype pattern enables cloning of an existing object, which is typically 
 
 ## C# Code Example
 
-%%%
+``` C#
 public class Prototype
 {
     public string Field { get; set; }
@@ -31,7 +31,7 @@ public class Prototype
         return (Prototype)this.MemberwiseClone();
     }
 }
-%%%
+```
 
 ## Visual Example
 

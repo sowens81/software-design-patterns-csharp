@@ -20,7 +20,7 @@ The Abstract Factory pattern allows you to instantiate different types of relate
 
 ## C# Code Example
 
-%%%
+``` C#
 public interface IButton
 {
     void Render();
@@ -68,7 +68,7 @@ public class MacFactory : IGUIFactory
     public IButton CreateButton() => new MacButton();
     public ICheckbox CreateCheckbox() => new MacCheckbox();
 }
-%%%
+```
 
 ## Visual Example
 

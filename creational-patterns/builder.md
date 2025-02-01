@@ -20,7 +20,7 @@ The Builder pattern separates the construction logic from the object itself, ena
 
 ## C# Code Example
 
-%%%
+``` C#
 public class Car
 {
     public string Engine { get; set; }
@@ -45,7 +45,7 @@ public class SportsCarBuilder : ICarBuilder
     public void BuildColor() => _car.Color = "Red";
     public Car GetResult() => _car;
 }
-%%%
+```
 
 ## Visual Example
 

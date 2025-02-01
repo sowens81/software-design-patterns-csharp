@@ -20,7 +20,7 @@ The **Flyweight** pattern allows objects to share common data. It defines a cent
 
 ## C# Code Example
 
-%%%
+``` C#
 public interface ICharacter
 {
     void Display();
@@ -51,7 +51,7 @@ public class CharacterFactory
         return _characters[type];
     }
 }
-%%%
+```
 
 ## Visual Example
 

@@ -20,7 +20,7 @@ The **Interpreter** pattern provides an interpreter class that evaluates express
 
 ## C# Code Example
 
-%%%
+``` C#
 public interface IExpression
 {
     int Interpret();
@@ -51,7 +51,7 @@ public class Add : IExpression
 
     public int Interpret() => _left.Interpret() + _right.Interpret();
 }
-%%%
+```
 
 ## Visual Example
 

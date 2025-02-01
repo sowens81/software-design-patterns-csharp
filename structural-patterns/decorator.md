@@ -20,7 +20,7 @@ The **Decorator** pattern wraps an existing object with a decorator class, which
 
 ## C# Code Example
 
-%%%
+``` C#
 public interface ICar
 {
     void Assemble();
@@ -62,7 +62,7 @@ public class LuxuryCar : ICar
         Console.WriteLine("Luxury Car Assembly");
     }
 }
-%%%
+```
 
 ## Visual Example
 

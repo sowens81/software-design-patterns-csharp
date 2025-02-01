@@ -20,7 +20,7 @@ The Singleton pattern ensures that only one instance of the class is created. It
 
 ## C# Code Example
 
-```
+``` C#
 public class Singleton
 {
     // Static instance of the class.

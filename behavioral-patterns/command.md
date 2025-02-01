@@ -20,7 +20,7 @@ The **Command** pattern encapsulates requests as command objects. This allows yo
 
 ## C# Code Example
 
-%%%
+``` C#
 public interface ICommand
 {
     void Execute();
@@ -57,7 +57,7 @@ public class RemoteControl
         _command.Execute();
     }
 }
-%%%
+```
 
 ## Visual Example
 

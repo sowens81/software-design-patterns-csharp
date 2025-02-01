@@ -17,13 +17,14 @@ Without the **Memento** pattern, you would need to expose the internal structure
 ## Solution
 
 The **Memento** pattern defines three main components:
+
 - The **Originator**: The object whose state is being saved or restored.
 - The **Memento**: The object that stores the state.
 - The **Caretaker**: The object that manages the memento, keeping track of saved states.
 
 ## C# Code Example
 
-%%%
+``` C#
 public class Memento
 {
     public string State { get; }
@@ -64,7 +65,7 @@ public class Caretaker
 
     public Memento GetMemento(int index) => _mementoList[index];
 }
-%%%
+```
 
 ## Visual Example
 

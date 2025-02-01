@@ -20,7 +20,7 @@ The **Facade** pattern defines a class that wraps the subsystem and provides a s
 
 ## C# Code Example
 
-%%%
+``` C#
 public class SubsystemA
 {
     public void OperationA() => Console.WriteLine("Subsystem A Operation");
@@ -56,7 +56,7 @@ public class Facade
         _subsystemC.OperationC();
     }
 }
-%%%
+```
 
 ## Visual Example
 

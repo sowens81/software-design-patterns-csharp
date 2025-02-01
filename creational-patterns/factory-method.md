@@ -20,7 +20,7 @@ The Factory Method pattern provides an interface for creating objects in a super
 
 ## C# Code Example
 
-%%%
+``` C#
 public abstract class Product
 {
     public abstract void DoSomething();
@@ -50,7 +50,7 @@ public class ConcreteCreatorB : Creator
 {
     public override Product FactoryMethod() => new ConcreteProductB();
 }
-%%%
+```
 
 ## Visual Example
 

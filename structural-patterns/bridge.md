@@ -20,7 +20,7 @@ The **Bridge** pattern provides an abstraction layer that holds a reference to a
 
 ## C# Code Example
 
-%%%
+``` C#
 public interface IDriver
 {
     void Drive();
@@ -67,7 +67,7 @@ public class Bike : Vehicle
         _driver.Drive();
     }
 }
-%%%
+```
 
 ## Visual Example
 

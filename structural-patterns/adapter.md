@@ -20,7 +20,7 @@ The Adapter pattern works by creating a wrapper or adapter class that converts t
 
 ## C# Code Example
 
-%%%
+``` C#
 public class OldSystem
 {
     public void OldRequest()
@@ -48,7 +48,7 @@ public class Adapter : INewSystem
         _oldSystem.OldRequest();
     }
 }
-%%%
+```
 
 ## Visual Example
 

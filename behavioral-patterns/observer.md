@@ -20,7 +20,7 @@ The **Observer** pattern defines a subject that maintains a list of observers. W
 
 ## C# Code Example
 
-%%%
+``` C#
 public interface IObserver
 {
     void Update(string state);
@@ -70,7 +70,7 @@ public class Subject
         }
     }
 }
-%%%
+```
 
 ## Visual Example
 

@@ -20,7 +20,7 @@ The **Chain of Responsibility** pattern creates a chain of handler objects. Each
 
 ## C# Code Example
 
-%%%
+``` C#
 public abstract class Handler
 {
     protected Handler _nextHandler;
@@ -62,7 +62,7 @@ public class ConcreteHandlerB : Handler
         }
     }
 }
-%%%
+```
 
 ## Visual Example
 

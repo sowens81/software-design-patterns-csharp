@@ -20,7 +20,7 @@ The **Composite** pattern enables you to work with part-whole hierarchies by tre
 
 ## C# Code Example
 
-%%%
+``` C#
 public interface IComponent
 {
     void Operation();
@@ -48,7 +48,7 @@ public class Composite : IComponent
         }
     }
 }
-%%%
+```
 
 ## Visual Example
 

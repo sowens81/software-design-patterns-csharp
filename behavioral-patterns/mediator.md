@@ -20,7 +20,7 @@ The **Mediator** pattern introduces a mediator object that manages communication
 
 ## C# Code Example
 
-%%%
+``` C#
 public class Mediator
 {
     private readonly List<IComponent> _components = new List<IComponent>();
@@ -51,7 +51,7 @@ public class ComponentA : IComponent
 {
     public void ReceiveMessage(string message) => Console.WriteLine($"Component A received: {message}");
 }
-%%%
+```
 
 ## Visual Example
 

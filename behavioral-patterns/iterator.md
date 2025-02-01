@@ -20,7 +20,7 @@ The **Iterator** pattern defines an iterator object that provides a way to trave
 
 ## C# Code Example
 
-%%%
+``` C#
 public interface IIterator
 {
     bool HasNext();
@@ -53,7 +53,7 @@ public class Collection
 
     public IIterator CreateIterator() => new ConcreteIterator(_items);
 }
-%%%
+```
 
 ## Visual Example
 
