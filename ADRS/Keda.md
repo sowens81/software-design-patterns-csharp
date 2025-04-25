@@ -1,142 +1,68 @@
-# Architecture Design Review (ADR) Document: Onboarding KEDA and Horizontal Pod Autoscaling
+Architecture Design Record (ADR): Onboarding KEDA and Horizontal Pod Autoscaling (HPA) to Azure Kubernetes Service (AKS)
+Context
+The need to scale workloads dynamically in response to fluctuating demands is becoming more critical for our services running in Azure Kubernetes Service (AKS). With the increasing volume of data processing, high transaction throughput, and large queues in services like Azure Service Bus, the ability to adjust compute resources efficiently is essential. This would provide better performance, cost management, and avoid manual intervention in scaling.
 
----
+At present, the existing system in AKS relies on static scaling configurations, primarily dependent on predefined limits. However, this approach has limitations in responding to dynamic workloads driven by event-driven triggers or fluctuating CPU and memory requirements. For example, high load on message queues or sudden database load cannot trigger scaling automatically with the current architecture, leading to performance bottlenecks.
 
-## 1. Introduction
+To address this, KEDA (Kubernetes Event-driven Autoscaling) and Horizontal Pod Autoscaling (HPA) need to be integrated into the existing AKS environment. KEDA would provide event-based autoscaling capabilities, while HPA would improve the responsiveness of the system by scaling services based on resource metrics like CPU and memory.
 
-### Purpose:
-This document outlines the architectural review for onboarding KEDA (Kubernetes Event-driven Autoscaling) and Horizontal Pod Autoscaling (HPA) to our existing Azure Kubernetes Services (AKS) environment. This initiative aims to improve the scalability, performance, and resource efficiency of key services within the bank’s core infrastructure.
+However, the integration of KEDA and HPA needs careful planning and execution. The security of the system must be ensured to protect sensitive data, and the changes must be validated to ensure minimal disruption to the existing services. The integration will also require updates to Helm charts, Terraform configurations, and monitoring systems.
 
-### Scope:  
-The implementation of KEDA and HPA will enhance our ability to dynamically scale services based on load and event-driven triggers, particularly to accommodate high throughput, heavy database load, and large volumes in Azure Service Bus queues. The scope includes:
-- Integrating KEDA for event-driven scaling.
-- Leveraging HPA for traditional load-based scaling.
-- Ensuring the seamless integration with our existing AKS deployment, which powers critical bank applications.
+Decision
+We will integrate KEDA and HPA into our AKS environment to enable dynamic scaling for both event-driven workloads and resource-driven workloads. This decision aims to achieve the following:
 
----
+Event-Driven Scaling with KEDA: We will install and configure KEDA to enable autoscaling based on external event sources such as Azure Service Bus or database load, helping us manage unpredictable workload spikes effectively.
 
-## 2. Service Overview
+Resource-Based Scaling with HPA: We will update the Helm charts and Kubernetes configurations to enable Horizontal Pod Autoscaling (HPA), ensuring that workloads are automatically scaled up or down based on CPU and memory utilization.
 
-### KEDA (Kubernetes Event-driven Autoscaling):
-KEDA is an open-source project that allows Kubernetes workloads to scale based on external events or custom metrics. KEDA integrates with event sources such as Azure Service Bus, Azure Storage, and others, which will be crucial for scaling services triggered by high volumes in message queues.
+Seamless Integration with Existing AKS Setup: The integration of KEDA and HPA will be carried out without interrupting existing workloads, with careful testing and validation in non-production environments before full deployment.
 
-### Horizontal Pod Autoscaling (HPA):
-HPA automatically adjusts the number of pods in a deployment based on CPU utilization or other custom metrics. By integrating HPA with KEDA, we can create a more granular, responsive scaling mechanism, scaling pods dynamically based on demand for CPU, memory, or queue length.
+Security Considerations: We will adhere to best practices for security, including managed identities, Role-Based Access Control (RBAC), and Azure Active Directory (AAD) integration, ensuring that only authorized services trigger scaling and that sensitive data remains protected during scaling operations.
 
-### Azure Kubernetes Services (AKS):
-This will be the environment in which both KEDA and HPA are deployed and managed. AKS will continue to be the container orchestration service running the bank’s microservices and applications.
+Automation and Monitoring: We will integrate CI/CD pipelines to automate the deployment of configurations, alongside monitoring tools like Azure Monitor and Prometheus, to ensure scaling actions are appropriately tracked and managed.
 
----
+Consequences
+Positive Consequences:
+Improved Scalability and Performance:
+With the integration of KEDA and HPA, our AKS clusters will automatically scale in response to varying loads. This dynamic scaling will enable services to perform efficiently under both high and low load conditions, improving overall system responsiveness and availability.
 
-## 3. Effort to Implement
+Cost Efficiency:
+By using dynamic autoscaling, we will only utilize the resources required for the workloads, reducing unnecessary resource allocation and providing significant cost savings during low-demand periods.
 
-### Technical Requirements:
-- **Infrastructure**:
-  - Existing AKS cluster needs to be updated to support KEDA and HPA.
-  - Integration with Azure Service Bus and database monitoring tools for event-driven scaling.
-- **Software**:
-  - KEDA controller needs to be installed and configured within the AKS environment.
-  - HPA configurations will need to be updated for the new event-driven autoscaling.
-  - Custom metrics server needs to be deployed to allow horizontal scaling based on additional application-specific metrics.
-- **Automation and CI/CD**:
-  - Update deployment pipelines to automate KEDA and HPA configurations.
-  - Add monitoring and alerting to ensure that autoscaling events are properly tracked and responded to.
+Operational Efficiency:
+With KEDA handling event-driven scaling and HPA managing resource scaling, the operations team will no longer need to manually intervene in scaling decisions, improving efficiency and reducing human error.
 
-### Integration Steps:
-1. Set up KEDA in the AKS environment.
-2. Configure KEDA to scale based on Azure Service Bus and database load metrics.
-3. Implement Horizontal Pod Autoscaling for non-event-driven services with CPU and memory-based scaling.
-4. Integrate KEDA with existing application metrics and define scaling policies.
-5. Conduct stress testing and performance benchmarking to validate scaling accuracy.
-6. Update the monitoring tools (e.g., Azure Monitor, Prometheus) to track scaling events.
+Enhanced Developer Enablement:
+Developers will benefit from simplified configurations, with the new autoscaling mechanisms abstracting away the complexities of manual scaling. This will streamline the process for deploying new applications and scaling existing ones.
 
-### Timeline:  
-- **Week 1-2**: Environment setup, install KEDA, configure AKS for scaling.
-- **Week 3**: Implement event-driven scaling logic, integrate Service Bus and custom metrics.
-- **Week 4-5**: Testing, monitoring, and refinement.
-- **Week 6**: Final integration and deployment.
+Better Resource Management:
+The combination of event-driven and resource-based scaling allows for more granular control over resource consumption, ensuring that our infrastructure can handle unexpected events such as spikes in message queue lengths or sudden increases in database load.
 
----
+Negative Consequences:
+Complexity in Configuration:
+The integration of KEDA and HPA requires careful updates to the existing infrastructure, including changes to Helm charts, Terraform configurations, and Kubernetes resource definitions. These changes must be thoroughly tested to avoid potential disruptions in production services.
 
-## 4. Business Benefits
+Learning Curve:
+Developers and operations teams may need time to familiarise themselves with KEDA and HPA, especially since these technologies bring new concepts (like event-driven scaling) that are not yet part of our standard operations.
 
-### Scalability:
-The integration of KEDA and HPA will allow our bank’s services to scale efficiently in response to both traditional load-based metrics (CPU, memory) and event-driven triggers (e.g., message queue length). This will enable us to handle spikes in transaction volume or processing load without manual intervention, ensuring our services can meet customer demand at all times.
+Increased Resource Consumption during Scaling:
+While autoscaling helps manage workload fluctuations, there is a possibility that incorrect configurations (such as improper scaling thresholds) could lead to inefficient scaling, resulting in resource waste or performance degradation.
 
-### Cost Efficiency:
-By dynamically scaling based on actual demand, KEDA and HPA will ensure that we are only using the resources we need, significantly reducing wasteful over-provisioning of compute resources. This leads to better cost management and operational efficiency, especially during low-demand periods.
+Potential Security Risks:
+Integrating KEDA with external event sources such as Azure Service Bus and databases introduces additional security considerations. The implementation of appropriate IAM policies and RBAC is crucial to mitigate risks related to unauthorized scaling triggers or data exposure.
 
-### Performance:
-The ability to automatically adjust resources will improve performance under variable loads, reducing latency in service responses and database interactions. It will also help prevent service degradation under heavy loads, improving customer experience and operational reliability.
+Dependency on External Services:
+Event-driven scaling introduces a dependency on the availability and reliability of external services such as Azure Service Bus. If these services face issues, it could impact the performance of the scaling mechanism.
 
-### Operational Efficiency:
-Automating scaling reduces manual intervention and monitoring overhead, enabling the operations team to focus on higher-level tasks. This aligns with our goals of increasing agility and reducing operational complexity.
+Next Steps:
+Approval of the Design:
+We will seek approval from the Architecture Design Review Board (ADRB) to proceed with the KEDA and HPA integration.
 
----
+Implementation Phases:
+The implementation will be carried out in phases, starting with a pilot project in a non-critical environment, followed by broader rollout and integration testing.
 
-## 5. Security Review
+Ongoing Monitoring and Adjustment:
+Post-deployment, we will closely monitor the scaling performance and adjust configurations as needed based on real-world usage and feedback.
 
-### Security Considerations:
-- **Access Control**: Ensure proper identity and access management (IAM) policies are in place for KEDA and HPA controllers to interact with Azure resources such as Service Bus, Storage, and databases.
-- **Event Source Security**: KEDA will interact with external services like Azure Service Bus and databases. These services must be secured with Azure Active Directory (AAD) authentication, managed identities, and role-based access control (RBAC) to ensure that only authorized services and users can trigger scaling.
-- **Pod Security**: Ensure that Kubernetes namespaces, RBAC roles, and pod security policies are implemented to prevent unauthorized access or escalation of privileges within the AKS environment.
-- **Data Security**: Ensure that sensitive data processed during scaling events (e.g., data from Service Bus or databases) is encrypted both in transit and at rest.
-
-### Mitigation Strategies:
-- Use managed identities for Azure resources to restrict access.
-- Implement a zero-trust security model within the AKS environment.
-- Regularly review and rotate credentials, tokens, and other sensitive information.
-- Conduct vulnerability assessments on KEDA, HPA, and AKS configurations.
-
-### Compliance:
-The implementation of KEDA and HPA will adhere to the bank’s internal security policies, as well as regulatory requirements (e.g., PCI DSS, GDPR). Data handled by the scaling mechanism, especially customer data, will be encrypted and stored in compliance with relevant regulations.
-
----
-
-## 6. Integration with Existing Services
-
-### Impact Analysis:
-- The implementation of KEDA and HPA will introduce minimal disruption to existing services. The scaling behavior will be additive and will not impact current deployments unless scaling limits are reached.
-- There may be slight changes to service deployment configurations (e.g., adding HPA specifications, configuring KEDA triggers) which will require coordination with development teams.
-
-### Dependencies:
-- The integration with Azure Service Bus and other external systems requires ensuring proper network configurations, authentication, and monitoring.
-- Application-level support for metrics collection and scaling triggers is essential for KEDA to function correctly.
-
-### Testing Plan:
-- **Load Testing**: Simulate high throughput scenarios with Azure Service Bus and database load to test the scaling behaviors of KEDA and HPA.
-- **Integration Testing**: Verify that services scale correctly and that all event-driven triggers function as expected.
-- **Failover and Resilience Testing**: Ensure that services remain resilient under failure conditions (e.g., loss of event source or database outage).
-
----
-
-## 7. Risks and Contingencies
-
-### Risk Assessment:
-- **Over-Scaling**: If misconfigured, HPA could trigger unnecessary scaling, leading to resource wastage.
-- **Under-Scaling**: KEDA may not scale adequately in response to certain workloads, leading to service degradation.
-- **Service Outages**: Network or configuration issues could cause delays in scaling, impacting service availability.
-
-### Contingency Plans:
-- Set up fallback mechanisms, such as horizontal scaling caps and alerting systems to prevent over-scaling.
-- Establish clear thresholds for event-driven scaling triggers and ensure thorough testing before production deployment.
-
-### Risk Mitigation:
-- Implement detailed monitoring and alerting to quickly detect and correct scaling issues.
-- Set up manual override controls for scaling actions during troubleshooting or emergency situations.
-
----
-
-## 8. Conclusion
-
-### Recommendations:  
-We recommend proceeding with the implementation of KEDA and HPA to improve scalability, performance, and resource efficiency. This solution aligns with our strategy of automating and optimizing cloud-native infrastructure while ensuring security and compliance standards are met.
-
-### Next Steps:  
-- Obtain approval for the proposed architecture and implementation plan.
-- Begin with a phased rollout, starting with non-critical workloads for testing.
-- Monitor the performance post-deployment and refine configurations as necessary.
-
----
-
-This document provides a detailed overview for onboarding KEDA and HPA in our Azure Kubernetes environment, ensuring we can scale services dynamically to meet business and technical requirements.
+Documentation and Training:
+Once the integration is complete, we will update internal documentation to guide teams through the new autoscaling mechanisms. Training sessions will be conducted to ensure teams understand how to configure and monitor KEDA and HPA.
